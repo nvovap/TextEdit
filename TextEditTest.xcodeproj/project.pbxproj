@@ -8,22 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		E7DAF26D1E507E4300CB120E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF26C1E507E4300CB120E /* AppDelegate.swift */; };
-		E7DAF26F1E507E4300CB120E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF26E1E507E4300CB120E /* ViewController.swift */; };
 		E7DAF2721E507E4300CB120E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7DAF2701E507E4300CB120E /* Main.storyboard */; };
 		E7DAF2751E507E4300CB120E /* TextEditTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF2731E507E4300CB120E /* TextEditTest.xcdatamodeld */; };
 		E7DAF2771E507E4300CB120E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7DAF2761E507E4300CB120E /* Assets.xcassets */; };
 		E7DAF27A1E507E4300CB120E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7DAF2781E507E4300CB120E /* LaunchScreen.storyboard */; };
+		E7DAF2821E507FD000CB120E /* TextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF2811E507FD000CB120E /* TextEditViewController.swift */; };
+		E7DAF2841E507FEE00CB120E /* ColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF2831E507FEE00CB120E /* ColorViewController.swift */; };
+		E7DAF2861E507FF600CB120E /* colorPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7DAF2851E507FF600CB120E /* colorPalette.plist */; };
+		E7DAF2881E50800D00CB120E /* FontViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF2871E50800D00CB120E /* FontViewController.swift */; };
+		E7DAF28A1E50803D00CB120E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF2891E50803D00CB120E /* MainViewController.swift */; };
+		E7DAF28C1E50808900CB120E /* NVPColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DAF28B1E50808900CB120E /* NVPColorPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E7DAF2691E507E4300CB120E /* TextEditTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextEditTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7DAF26C1E507E4300CB120E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E7DAF26E1E507E4300CB120E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E7DAF2711E507E4300CB120E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7DAF2741E507E4300CB120E /* TextEditTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TextEditTest.xcdatamodel; sourceTree = "<group>"; };
 		E7DAF2761E507E4300CB120E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7DAF2791E507E4300CB120E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7DAF27B1E507E4300CB120E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7DAF2811E507FD000CB120E /* TextEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditViewController.swift; sourceTree = "<group>"; };
+		E7DAF2831E507FEE00CB120E /* ColorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorViewController.swift; sourceTree = "<group>"; };
+		E7DAF2851E507FF600CB120E /* colorPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = colorPalette.plist; sourceTree = "<group>"; };
+		E7DAF2871E50800D00CB120E /* FontViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontViewController.swift; sourceTree = "<group>"; };
+		E7DAF2891E50803D00CB120E /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		E7DAF28B1E50808900CB120E /* NVPColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NVPColorPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +66,13 @@
 		E7DAF26B1E507E4300CB120E /* TextEditTest */ = {
 			isa = PBXGroup;
 			children = (
+				E7DAF2891E50803D00CB120E /* MainViewController.swift */,
+				E7DAF2851E507FF600CB120E /* colorPalette.plist */,
+				E7DAF2811E507FD000CB120E /* TextEditViewController.swift */,
+				E7DAF2831E507FEE00CB120E /* ColorViewController.swift */,
+				E7DAF28B1E50808900CB120E /* NVPColorPicker.swift */,
+				E7DAF2871E50800D00CB120E /* FontViewController.swift */,
 				E7DAF26C1E507E4300CB120E /* AppDelegate.swift */,
-				E7DAF26E1E507E4300CB120E /* ViewController.swift */,
 				E7DAF2701E507E4300CB120E /* Main.storyboard */,
 				E7DAF2761E507E4300CB120E /* Assets.xcassets */,
 				E7DAF2781E507E4300CB120E /* LaunchScreen.storyboard */,
@@ -129,6 +144,7 @@
 			files = (
 				E7DAF27A1E507E4300CB120E /* LaunchScreen.storyboard in Resources */,
 				E7DAF2771E507E4300CB120E /* Assets.xcassets in Resources */,
+				E7DAF2861E507FF600CB120E /* colorPalette.plist in Resources */,
 				E7DAF2721E507E4300CB120E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,8 +156,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7DAF26F1E507E4300CB120E /* ViewController.swift in Sources */,
+				E7DAF2881E50800D00CB120E /* FontViewController.swift in Sources */,
+				E7DAF2821E507FD000CB120E /* TextEditViewController.swift in Sources */,
+				E7DAF28C1E50808900CB120E /* NVPColorPicker.swift in Sources */,
 				E7DAF26D1E507E4300CB120E /* AppDelegate.swift in Sources */,
+				E7DAF28A1E50803D00CB120E /* MainViewController.swift in Sources */,
+				E7DAF2841E507FEE00CB120E /* ColorViewController.swift in Sources */,
 				E7DAF2751E507E4300CB120E /* TextEditTest.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
