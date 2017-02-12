@@ -57,15 +57,6 @@
                                     <action selector="changedPosition:" destination="Bgw-eq-Huc" eventType="valueChanged" id="TVf-kt-Cah"/>
                                 </connections>
                             </segmentedControl>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wl7-e0-rUn">
-                                <rect key="frame" x="16" y="130" width="343" height="30"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="Bgw-eq-Huc" id="Wz7-Jh-hej"/>
-                                </connections>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBG-1f-zjL">
                                 <rect key="frame" x="309" y="597" width="50" height="50"/>
                                 <constraints>
@@ -88,27 +79,63 @@
                                     <segue destination="4yb-8h-gqQ" kind="unwind" unwindAction="exitFromTextEdit:" id="Gl7-hd-TJF"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="uyP-XO-mKj">
+                                <rect key="frame" x="16" y="131" width="343" height="205"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="205" id="mtL-HE-3ME"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Bgw-eq-Huc" id="xhJ-qP-dDm"/>
+                                </connections>
+                            </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dpk-GK-DAb">
+                                <rect key="frame" x="16" y="344" width="287" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ue-KA-30D">
+                                <rect key="frame" x="313" y="344" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="cct-hM-Qeg"/>
+                                </constraints>
+                                <state key="normal" title="Get"/>
+                                <connections>
+                                    <action selector="getSelectedText:" destination="Bgw-eq-Huc" eventType="touchUpInside" id="46K-AB-ijX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="leadingMargin" secondItem="Wl7-e0-rUn" secondAttribute="leading" id="4Bz-dM-PQ7"/>
+                            <constraint firstItem="uyP-XO-mKj" firstAttribute="leading" secondItem="Cea-5B-yZT" secondAttribute="leadingMargin" id="7XE-H5-O7L"/>
                             <constraint firstItem="wSl-9O-dMZ" firstAttribute="top" secondItem="tKg-Pv-5xK" secondAttribute="bottom" constant="60" id="9bQ-67-Ehv"/>
                             <constraint firstAttribute="leadingMargin" secondItem="1bz-eT-Eu7" secondAttribute="leading" id="9jm-SC-qPw"/>
-                            <constraint firstItem="Wl7-e0-rUn" firstAttribute="top" secondItem="wSl-9O-dMZ" secondAttribute="bottom" constant="15" id="GBT-U0-4gl"/>
+                            <constraint firstItem="7ue-KA-30D" firstAttribute="leading" secondItem="dpk-GK-DAb" secondAttribute="trailing" constant="10" id="ClP-Ox-tsM"/>
+                            <constraint firstItem="dpk-GK-DAb" firstAttribute="top" secondItem="uyP-XO-mKj" secondAttribute="bottom" constant="8" id="Mpw-VR-VNQ"/>
+                            <constraint firstItem="uyP-XO-mKj" firstAttribute="trailing" secondItem="Cea-5B-yZT" secondAttribute="trailingMargin" id="OvH-gF-g4I"/>
                             <constraint firstItem="FE9-zF-6qb" firstAttribute="leading" secondItem="rX0-sn-z4K" secondAttribute="trailing" constant="15" id="PxZ-Q5-NC1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CBG-1f-zjL" secondAttribute="trailing" id="RNF-u9-0BX"/>
                             <constraint firstItem="FE9-zF-6qb" firstAttribute="centerY" secondItem="wSl-9O-dMZ" secondAttribute="centerY" id="TeK-Cc-5hd"/>
+                            <constraint firstItem="uyP-XO-mKj" firstAttribute="top" secondItem="wSl-9O-dMZ" secondAttribute="bottom" constant="16" id="ben-oS-EPZ"/>
                             <constraint firstItem="DUB-Yu-14h" firstAttribute="top" secondItem="CBG-1f-zjL" secondAttribute="bottom" constant="20" id="eOE-AR-n1i"/>
                             <constraint firstItem="rX0-sn-z4K" firstAttribute="centerY" secondItem="wSl-9O-dMZ" secondAttribute="centerY" id="f0Y-Bk-QBJ"/>
+                            <constraint firstItem="7ue-KA-30D" firstAttribute="top" secondItem="dpk-GK-DAb" secondAttribute="top" id="f3n-Up-BIm"/>
                             <constraint firstItem="DUB-Yu-14h" firstAttribute="top" secondItem="1bz-eT-Eu7" secondAttribute="bottom" constant="20" id="g1S-op-Cfo"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Wl7-e0-rUn" secondAttribute="trailing" id="gvM-3v-mA2"/>
                             <constraint firstItem="wSl-9O-dMZ" firstAttribute="leading" secondItem="Cea-5B-yZT" secondAttribute="leadingMargin" id="jRT-s2-szQ"/>
+                            <constraint firstItem="7ue-KA-30D" firstAttribute="trailing" secondItem="Cea-5B-yZT" secondAttribute="trailingMargin" id="lVP-Xt-NNF"/>
                             <constraint firstItem="rX0-sn-z4K" firstAttribute="leading" secondItem="wSl-9O-dMZ" secondAttribute="trailing" constant="15" id="mlh-uZ-aET"/>
+                            <constraint firstItem="dpk-GK-DAb" firstAttribute="leading" secondItem="Cea-5B-yZT" secondAttribute="leadingMargin" id="wpO-hX-eld"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4FU-3u-UEe"/>
                     <connections>
-                        <outlet property="textField" destination="Wl7-e0-rUn" id="Yk5-M5-N0D"/>
+                        <outlet property="alligmentSegmentControl" destination="FE9-zF-6qb" id="kRb-g9-Zpv"/>
+                        <outlet property="textFieldSelected" destination="dpk-GK-DAb" id="Y3g-wA-Jqp"/>
+                        <outlet property="textView" destination="uyP-XO-mKj" id="qtp-pa-JSJ"/>
                         <segue destination="4yb-8h-gqQ" kind="unwind" identifier="exitAndSaveFromTextEdit" unwindAction="exitAndSaveFromTextEdit:" id="FLa-tX-qpQ"/>
                     </connections>
                 </viewController>

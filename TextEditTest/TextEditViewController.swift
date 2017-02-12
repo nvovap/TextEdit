@@ -32,27 +32,80 @@ class TextEditViewController: MainViewController {
     var textAttrString = NSAttributedString()
     
     
+    @IBOutlet weak var alligmentSegmentControl: UISegmentedControl!
+    @IBOutlet weak var textView: UITextView!
 
     
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var textFieldSelected: UITextField!
+    
+    
+    @IBAction func getSelectedText(_ sender: UIButton) {
+        
+        print(textView.selectedTextRange ?? "nil TextRange")
+        
+        
+      //  if textView.selectedTextRange?.isEmpty == false {
+            
+            print(textView.selectedRange.location)
+            print(textView.selectedRange.length)
+            
+            
+     //   }
+      //  print(textView.selectedRange.location)
+        
+        
+        if let selectedTextRange = textView.selectedTextRange {
+            let start = selectedTextRange.start
+            let end = selectedTextRange.end
+            let isEmpty = selectedTextRange.isEmpty
+            
+            
+            print("start = \(start)  end = \(end) isEmpty = \(isEmpty)")
+            
+            print("start document = \(textView.beginningOfDocument)  end document = \(textView.endOfDocument)")
+            
+            
+            
+        }
+        
+                
+    }
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        attributed = MyAttributed(color: textField.textColor!, font: textField.font!, position: .left )
+       // attributed = MyAttributed(color: textView.textColor!, font: textView.font!, position: .left )
+        attributed = MyAttributed(color: UIColor.black , font: UIFont.italicSystemFont(ofSize: 17), position: .left )
         
     }
 
  
     @IBAction func changedPosition(_ sender: UISegmentedControl) {
+        
+        
         attributed.position = NSTextAlignment(rawValue: sender.selectedSegmentIndex)!
         
-        let text = textField.text
+        let text = textView.text
         
         let myAttribute = getAttribute()
-        textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
         
-        textField.attributedText = textAttrString
+        
+        
+        
+        if textView.selectedTextRange?.isEmpty == false {
+            let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
+            
+            textMutAttrString.setAttributes(myAttribute, range: textView.selectedRange)
+            
+            textAttrString = textMutAttrString
+        } else {
+            textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
+        }
+        
+        let position = textView.selectedTextRange
+        textView.attributedText = textAttrString
+        textView.selectedTextRange = position
         
         
       //  textField.textAlignment = attributed.position
@@ -64,7 +117,7 @@ class TextEditViewController: MainViewController {
         popoverVC.modalPresentationStyle = .popover
         popoverVC.preferredContentSize = CGSize(width: 400, height: 300)
         
-        let font = textField.font!
+        let font = textView.font!
         
         popoverVC.currentNameFont = font.fontName
         popoverVC.currentSizeFont = Int(font.pointSize)
@@ -73,8 +126,8 @@ class TextEditViewController: MainViewController {
         print("currentNameFont = \(popoverVC.currentNameFont) currentSizeFont = \(popoverVC.currentSizeFont)")
         
         if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.sourceView = textField
-            popoverController.sourceRect = CGRect(x: 0, y: 0, width: textField.frame.width, height: textField.frame.height)
+            popoverController.sourceView = textView
+            popoverController.sourceRect = CGRect(x: 0, y: 0, width: textView.frame.width, height: textView.frame.height)
             popoverController.permittedArrowDirections = .any
             
             popoverController.delegate = self
@@ -91,8 +144,8 @@ class TextEditViewController: MainViewController {
         popoverVC.modalPresentationStyle = .popover
         popoverVC.preferredContentSize = CGSize(width: 300, height: 200)
         if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.sourceView = textField
-            popoverController.sourceRect = CGRect(x: 0, y: 0, width: textField.frame.width, height: textField.frame.height)
+            popoverController.sourceView = textView
+            popoverController.sourceRect = CGRect(x: 0, y: 0, width: textView.frame.width, height: textView.frame.height)
             popoverController.permittedArrowDirections = .any
             popoverController.delegate = self
             
@@ -112,6 +165,44 @@ class TextEditViewController: MainViewController {
  }
 
 
+extension TextEditViewController: UITextViewDelegate {
+    //textViewDidChange
+    func textViewDidChange(_ textView: UITextView) {
+        print("change !!!")
+    }
+    
+    //textViewDidChangeSelection
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        print("selection !!!")
+        
+        
+        var range = NSRange()
+        
+        if textView.selectedTextRange!.isEmpty {
+            
+            range.location = textView.selectedRange.location
+            range.length = textView.offset(from: textView.selectedTextRange!.start , to: textView.endOfDocument)
+            
+        } else {
+            
+            range = textView.selectedRange
+            
+        }
+        
+        if let paragraph = textView.attributedText.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle {
+          
+            print(paragraph.alignment.rawValue)
+            if paragraph.alignment.rawValue < 4 {
+                alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue                
+            }
+            
+       }
+    }
+    
+    
+    
+}
+
 extension TextEditViewController: UIPopoverPresentationControllerDelegate {
     
     
@@ -126,20 +217,20 @@ extension TextEditViewController: UIPopoverPresentationControllerDelegate {
     
     func setTextColor (_ color: UIColor) {
         
-        let text = textField.text
+        let text = textView.text
         
         attributed.color = color
         
         let myAttribute = getAttribute()
         textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
  
-        textField.attributedText = textAttrString
+        textView.attributedText = textAttrString
     }
     
     
     
     func setFont(_ font: UIFont) {
-        let text = textField.text
+        let text = textView.text
         
         attributed.font = font
         
@@ -147,7 +238,7 @@ extension TextEditViewController: UIPopoverPresentationControllerDelegate {
         
         textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
         
-        textField.attributedText = textAttrString
+        textView.attributedText = textAttrString
             
     }
     
