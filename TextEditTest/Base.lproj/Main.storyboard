@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2553a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Bgw-eq-Huc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Bgw-eq-Huc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -46,17 +46,6 @@
                                     <action selector="onClickColorButton:" destination="Bgw-eq-Huc" eventType="touchUpInside" id="95O-N6-TZJ"/>
                                 </connections>
                             </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FE9-zF-6qb">
-                                <rect key="frame" x="121" y="83" width="146" height="29"/>
-                                <segments>
-                                    <segment title="Left"/>
-                                    <segment title="Centr"/>
-                                    <segment title="Right"/>
-                                </segments>
-                                <connections>
-                                    <action selector="changedPosition:" destination="Bgw-eq-Huc" eventType="valueChanged" id="TVf-kt-Cah"/>
-                                </connections>
-                            </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBG-1f-zjL">
                                 <rect key="frame" x="309" y="597" width="50" height="50"/>
                                 <constraints>
@@ -108,18 +97,31 @@
                                     <action selector="getSelectedText:" destination="Bgw-eq-Huc" eventType="touchUpInside" id="46K-AB-ijX"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FE9-zF-6qb">
+                                <rect key="frame" x="16" y="28" width="334" height="29"/>
+                                <segments>
+                                    <segment title="Left"/>
+                                    <segment title="Centr"/>
+                                    <segment title="Right"/>
+                                    <segment title="Justified"/>
+                                    <segment title="Natural"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changedPosition:" destination="Bgw-eq-Huc" eventType="valueChanged" id="TVf-kt-Cah"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="FE9-zF-6qb" firstAttribute="leading" secondItem="Cea-5B-yZT" secondAttribute="leadingMargin" id="3sG-zJ-uCX"/>
                             <constraint firstItem="uyP-XO-mKj" firstAttribute="leading" secondItem="Cea-5B-yZT" secondAttribute="leadingMargin" id="7XE-H5-O7L"/>
-                            <constraint firstItem="wSl-9O-dMZ" firstAttribute="top" secondItem="tKg-Pv-5xK" secondAttribute="bottom" constant="60" id="9bQ-67-Ehv"/>
                             <constraint firstAttribute="leadingMargin" secondItem="1bz-eT-Eu7" secondAttribute="leading" id="9jm-SC-qPw"/>
                             <constraint firstItem="7ue-KA-30D" firstAttribute="leading" secondItem="dpk-GK-DAb" secondAttribute="trailing" constant="10" id="ClP-Ox-tsM"/>
+                            <constraint firstItem="FE9-zF-6qb" firstAttribute="top" secondItem="tKg-Pv-5xK" secondAttribute="bottom" constant="8" id="MbY-I1-4Se"/>
                             <constraint firstItem="dpk-GK-DAb" firstAttribute="top" secondItem="uyP-XO-mKj" secondAttribute="bottom" constant="8" id="Mpw-VR-VNQ"/>
                             <constraint firstItem="uyP-XO-mKj" firstAttribute="trailing" secondItem="Cea-5B-yZT" secondAttribute="trailingMargin" id="OvH-gF-g4I"/>
-                            <constraint firstItem="FE9-zF-6qb" firstAttribute="leading" secondItem="rX0-sn-z4K" secondAttribute="trailing" constant="15" id="PxZ-Q5-NC1"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FE9-zF-6qb" secondAttribute="trailing" id="PzY-UM-LaT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CBG-1f-zjL" secondAttribute="trailing" id="RNF-u9-0BX"/>
-                            <constraint firstItem="FE9-zF-6qb" firstAttribute="centerY" secondItem="wSl-9O-dMZ" secondAttribute="centerY" id="TeK-Cc-5hd"/>
                             <constraint firstItem="uyP-XO-mKj" firstAttribute="top" secondItem="wSl-9O-dMZ" secondAttribute="bottom" constant="16" id="ben-oS-EPZ"/>
                             <constraint firstItem="DUB-Yu-14h" firstAttribute="top" secondItem="CBG-1f-zjL" secondAttribute="bottom" constant="20" id="eOE-AR-n1i"/>
                             <constraint firstItem="rX0-sn-z4K" firstAttribute="centerY" secondItem="wSl-9O-dMZ" secondAttribute="centerY" id="f0Y-Bk-QBJ"/>
@@ -129,6 +131,7 @@
                             <constraint firstItem="7ue-KA-30D" firstAttribute="trailing" secondItem="Cea-5B-yZT" secondAttribute="trailingMargin" id="lVP-Xt-NNF"/>
                             <constraint firstItem="rX0-sn-z4K" firstAttribute="leading" secondItem="wSl-9O-dMZ" secondAttribute="trailing" constant="15" id="mlh-uZ-aET"/>
                             <constraint firstItem="dpk-GK-DAb" firstAttribute="leading" secondItem="Cea-5B-yZT" secondAttribute="leadingMargin" id="wpO-hX-eld"/>
+                            <constraint firstItem="wSl-9O-dMZ" firstAttribute="top" secondItem="FE9-zF-6qb" secondAttribute="bottom" constant="24" id="zOE-uw-RtS"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4FU-3u-UEe"/>

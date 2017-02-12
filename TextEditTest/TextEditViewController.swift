@@ -39,34 +39,108 @@ class TextEditViewController: MainViewController {
     @IBOutlet weak var textFieldSelected: UITextField!
     
     
+//    
+//    func generateAttributedString(with searchTerm: String, targetString: String) -> NSAttributedString? {
+//        let attributedString = NSMutableAttributedString(string: targetString)
+//        do {
+//            let regex = try NSRegularExpression(pattern: searchTerm, options: .caseInsensitive)
+//            let range = NSRange(location: 0, length: targetString.utf16.count)
+//            for match in regex.matches(in: targetString, options: .withTransparentBounds, range: range) {
+//                attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 16, weight: UIFontWeightBold), range: match.range)
+//            }
+//            return attributedString
+//        } catch _ {
+//            NSLog("Error creating regular expresion")
+//            return nil
+//        }
+//    }
+//    
     @IBAction func getSelectedText(_ sender: UIButton) {
         
-        print(textView.selectedTextRange ?? "nil TextRange")
+      // let attributedString = textView.attributedText
+        
+    
+        textView.text.enumerateLines { (str, hz) in
+            print(str)
+        }
+        
+        
+//        if let selectedTextRange = textView.selectedTextRange {
+//            let length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
+//           
+//            let range =  textView.textRange(from: selectedTextRange.start, to: textView.endOfDocument)
+//            
+//            //let range = NSRange(location: textView.selectedRange.location, length: length)
+//            
+//           
+//            
+//            textView.text.enumerateSubstrings(in: range, options: String.EnumerationOptions.byLines, { (str, range1, range2, res) in
+//                
+//                print(str)
+//            })
+//            
+//            textView.text.enumerateSubstrings(in: Range<String.Index>, options: <#T##String.EnumerationOptions#>, <#T##body: (String?, Range<String.Index>, Range<String.Index>, inout Bool) -> ()##(String?, Range<String.Index>, Range<String.Index>, inout Bool) -> ()#>)
+//            
+//        }
+        
+        
+        if let selectedTextRange = textView.selectedTextRange {
+            do {
+                
+                
+                
+                let regex = try NSRegularExpression(pattern: "\n", options: .caseInsensitive)
+                let length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
+                
+                let range = NSRange(location: textView.selectedRange.location, length: length)
+                
+                for match in regex.matches(in: textView.text, options: .withTransparentBounds, range: range) {
+                     //attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 16, weight: UIFontWeightBold), range: match.range)
+                    
+//                    if let toPosition = textView.position(from: selectedTextRange.start, offset: match.range.location) {
+//                        textView.selectedTextRange = textView.textRange(from: selectedTextRange.start, to: toPosition)
+//                    }
+                    
+                    
+                    textView.selectedRange = NSRange(location: textView.selectedRange.location, length:  match.range.location - textView.selectedRange.location)
+                    
+                    break
+                    
+                }
+                
+                
+            } catch _ {
+                
+            }
+        }
+//
+       // print(textView.selectedTextRange ?? "nil TextRange")
         
         
       //  if textView.selectedTextRange?.isEmpty == false {
             
-            print(textView.selectedRange.location)
-            print(textView.selectedRange.length)
+       //    print(textView.selectedRange.location)
+       //     print(textView.selectedRange.length)
             
             
      //   }
       //  print(textView.selectedRange.location)
         
         
-        if let selectedTextRange = textView.selectedTextRange {
-            let start = selectedTextRange.start
-            let end = selectedTextRange.end
-            let isEmpty = selectedTextRange.isEmpty
+//        if let selectedTextRange = textView.selectedTextRange {
+//            let start = selectedTextRange.start
+//            let end = selectedTextRange.end
+//            let isEmpty = selectedTextRange.isEmpty
+//            
+//            
+//            print("start = \(start)  end = \(end) isEmpty = \(isEmpty)")
+//            
+//            print("start document = \(textView.beginningOfDocument)  end document = \(textView.endOfDocument)")
+        
             
+           // textRangeFromPosition
             
-            print("start = \(start)  end = \(end) isEmpty = \(isEmpty)")
-            
-            print("start document = \(textView.beginningOfDocument)  end document = \(textView.endOfDocument)")
-            
-            
-            
-        }
+     //   }
         
                 
     }
@@ -93,19 +167,23 @@ class TextEditViewController: MainViewController {
         
         
         
-        if textView.selectedTextRange?.isEmpty == false {
+        if textView.selectedTextRange!.isEmpty{
+            
+            
+            
+            textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
+        } else {
             let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
             
             textMutAttrString.setAttributes(myAttribute, range: textView.selectedRange)
             
             textAttrString = textMutAttrString
-        } else {
-            textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
         }
         
-        let position = textView.selectedTextRange
+        let position = textView.selectedRange
+        
         textView.attributedText = textAttrString
-        textView.selectedTextRange = position
+        textView.selectedRange = position
         
         
       //  textField.textAlignment = attributed.position
@@ -175,28 +253,33 @@ extension TextEditViewController: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         print("selection !!!")
         
+        print("location = \(textView.selectedRange.location) length = \(textView.selectedRange.length)")
         
-        var range = NSRange()
+        var range = textView.selectedRange
         
-        if textView.selectedTextRange!.isEmpty {
-            
-            range.location = textView.selectedRange.location
-            range.length = textView.offset(from: textView.selectedTextRange!.start , to: textView.endOfDocument)
-            
-        } else {
-            
-            range = textView.selectedRange
+        //print(textView.attributedText.length)
+        
+        let lengthDocument = textView.offset(from: textView.beginningOfDocument, to: textView.endOfDocument)
+        
+        if range.length == 0 && range.location != lengthDocument {
+            range.length = 1
+        }
+        
+        textView.attributedText.enumerateAttribute(NSParagraphStyleAttributeName, in: range, options: .reverse) { (attribute: Any, range: NSRange, _) in
+            if let paragraph = attribute as? NSMutableParagraphStyle {
+                alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue
+            }
             
         }
         
-        if let paragraph = textView.attributedText.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle {
-          
-            print(paragraph.alignment.rawValue)
-            if paragraph.alignment.rawValue < 4 {
-                alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue                
-            }
-            
-       }
+//        if let paragraph = textView.attributedText.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle {
+//          
+//            print(paragraph.alignment.rawValue)
+//            if paragraph.alignment.rawValue < 4 {
+//                alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue                
+//            }
+//            
+//       }
     }
     
     
