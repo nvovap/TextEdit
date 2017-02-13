@@ -38,7 +38,9 @@ class FontViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             }
         }
 
-        if let indexFontSize = fontFamilyNames.index(of: currentNameFont) {
+        
+        print(currentNameFont)
+        if let indexFontSize = fontNames.index(of: currentNameFont) {
             picker.selectRow(indexFontSize, inComponent: 0, animated: false)
         }
     

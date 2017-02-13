@@ -95,9 +95,12 @@ class TextEditViewController: MainViewController {
                 
                 
                 let regex = try NSRegularExpression(pattern: "\n", options: .caseInsensitive)
-                let length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
+                var length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
                 
-                let range = NSRange(location: textView.selectedRange.location, length: length)
+                var range = NSRange(location: textView.selectedRange.location, length: length)
+                
+                var end = textView.offset(from: textView.beginningOfDocument, to: textView.endOfDocument)
+                var start = 0
                 
                 for match in regex.matches(in: textView.text, options: .withTransparentBounds, range: range) {
                      //attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 16, weight: UIFontWeightBold), range: match.range)
@@ -107,11 +110,35 @@ class TextEditViewController: MainViewController {
 //                    }
                     
                     
-                    textView.selectedRange = NSRange(location: textView.selectedRange.location, length:  match.range.location - textView.selectedRange.location)
+                   // textView.selectedRange = NSRange(location: textView.selectedRange.location, length:  match.range.location - textView.selectedRange.location)
+                    end = match.range.location
                     
                     break
                     
                 }
+                
+                length  = textView.offset(from: textView.beginningOfDocument, to: selectedTextRange.start)
+                range = NSRange(location: 0, length: length)
+                
+                for match in regex.matches(in: textView.text, options: .withTransparentBounds, range: range) {
+                    //attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 16, weight: UIFontWeightBold), range: match.range)
+                    
+                    //                    if let toPosition = textView.position(from: selectedTextRange.start, offset: match.range.location) {
+                    //                        textView.selectedTextRange = textView.textRange(from: selectedTextRange.start, to: toPosition)
+                    //                    }
+                    
+                    
+                    
+                    start = match.range.location + 1
+                    
+                    
+                    
+                }
+                
+                print("start = \(start) end = \(end)")
+                
+                
+                textView.selectedRange = NSRange(location:  start, length: end-start)
                 
                 
             } catch _ {
@@ -167,17 +194,8 @@ class TextEditViewController: MainViewController {
         attributed.position = NSTextAlignment(rawValue: sender.selectedSegmentIndex)!
         let myAttribute = getAttribute()
         
-        if let currentSelectedRange = currentSelectedRange {
-            let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
-            
-            textMutAttrString.setAttributes(myAttribute, range: currentSelectedRange)
-            
-            textAttrString = textMutAttrString
-            let position = textView.selectedRange
-            
-            textView.attributedText = textAttrString
-            textView.selectedRange = position
-        }
+        applyAttribute(attribute: myAttribute)
+        
     }
 
     @IBAction func readAllFonts(_ sender: UIButton) {
@@ -186,7 +204,7 @@ class TextEditViewController: MainViewController {
         popoverVC.modalPresentationStyle = .popover
         popoverVC.preferredContentSize = CGSize(width: 400, height: 300)
         
-        let font = textView.font!
+        let font = attributed.font
         
         popoverVC.currentNameFont = font.fontName
         popoverVC.currentSizeFont = Int(font.pointSize)
@@ -244,31 +262,37 @@ extension TextEditViewController: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         print("selection !!!")
         
-        print("location = \(textView.selectedRange.location) length = \(textView.selectedRange.length)")
-        
         let rangeSelect = textView.selectedRange
+        
+        
         
         if rangeSelect.length > 0 {
             currentSelectedRange = rangeSelect
         } else {
             if let selectedTextRange = textView.selectedTextRange {
                 do {
-                    
-                    
-                    
                     let regex = try NSRegularExpression(pattern: "\n", options: .caseInsensitive)
-                    let length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
+                    var length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
                     
                     var range = NSRange(location: textView.selectedRange.location, length: length)
                     
-                    for match in regex.matches(in: textView.text, options: .withTransparentBounds, range: range) {
-                        range = NSRange(location: range.location, length:  match.range.location - range.location)
-                        
-                        break
-                        
+                    
+                    var end = textView.offset(from: textView.beginningOfDocument, to: textView.endOfDocument)
+                    var start = 0
+                    
+                    if let match = regex.firstMatch(in: textView.text, options: .withTransparentBounds, range: range) {
+                        end = match.range.location
                     }
                     
-                    currentSelectedRange = range
+                    
+                    length  = textView.offset(from: textView.beginningOfDocument, to: selectedTextRange.start)
+                    range = NSRange(location: 0, length: length)
+                    
+                    for match in regex.matches(in: textView.text, options: .withTransparentBounds, range: range) {
+                        start = match.range.location + 1
+                    }
+                    
+                    currentSelectedRange = NSRange(location:  start, length: end-start)
                     
                 } catch _ {
                     
@@ -276,39 +300,34 @@ extension TextEditViewController: UITextViewDelegate {
             }
         }
         
-        //print(textView.attributedText.length)
-        
-        
-        
-//        if range.length == 0 && range.location != lengthDocument {
-//            range.length = 1
-//        }
-        
-        
 
         if let range = currentSelectedRange {
-            textView.attributedText.enumerateAttribute(NSParagraphStyleAttributeName, in: range, options: .reverse) { (attribute: Any, range: NSRange, _) in
-                if let paragraph = attribute as? NSMutableParagraphStyle {
-                    alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue
+            textView.attributedText.enumerateAttributes(in: range, options: .reverse, using: { (attributes, range, nil) in
+                
+                if let font = attributes[NSFontAttributeName] as? UIFont {
+                    attributed.font = font
                 }
                 
-            }
+                if let color = attributes[NSForegroundColorAttributeName] as? UIColor {
+                    attributed.color = color
+                }
+                
+                if let paragraph = attributes[NSParagraphStyleAttributeName] as? NSMutableParagraphStyle {
+                    attributed.position = paragraph.alignment
+                    
+                    if attributed.position.rawValue < 4 {
+                        alligmentSegmentControl.selectedSegmentIndex = attributed.position.rawValue
+                    } else {
+                        alligmentSegmentControl.selectedSegmentIndex = 0
+                    }
+                }
+                
+            })
         }
-        
-        
-//        if let paragraph = textView.attributedText.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle {
-//          
-//            print(paragraph.alignment.rawValue)
-//            if paragraph.alignment.rawValue < 4 {
-//                alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue                
-//            }
-//            
-//       }
     }
     
-    
-    
 }
+
 
 extension TextEditViewController: UIPopoverPresentationControllerDelegate {
     
@@ -322,14 +341,12 @@ extension TextEditViewController: UIPopoverPresentationControllerDelegate {
         return [ NSFontAttributeName: attributed.font,  NSForegroundColorAttributeName: attributed.color, NSParagraphStyleAttributeName: paragraphStyle]
     }
     
-    func setTextColor (_ color: UIColor) {
-        attributed.color = color
-        let myAttribute = getAttribute()
-        
+    
+    func applyAttribute(attribute: [String : Any]) {
         if let currentSelectedRange = currentSelectedRange {
             let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
             
-            textMutAttrString.setAttributes(myAttribute, range: currentSelectedRange)
+            textMutAttrString.setAttributes(attribute, range: currentSelectedRange)
             
             textAttrString = textMutAttrString
             let position = textView.selectedRange
@@ -337,6 +354,14 @@ extension TextEditViewController: UIPopoverPresentationControllerDelegate {
             textView.attributedText = textAttrString
             textView.selectedRange = position
         }
+        
+    }
+    
+    func setTextColor (_ color: UIColor) {
+        attributed.color = color
+        let myAttribute = getAttribute()
+        
+        applyAttribute(attribute: myAttribute)
         
     }
     
@@ -348,21 +373,10 @@ extension TextEditViewController: UIPopoverPresentationControllerDelegate {
         
         let myAttribute = getAttribute()
         
-        
-        
-        if let currentSelectedRange = currentSelectedRange {
-            let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
-            
-            textMutAttrString.setAttributes(myAttribute, range: currentSelectedRange)
-            
-            textAttrString = textMutAttrString
-            let position = textView.selectedRange
-            
-            textView.attributedText = textAttrString
-            textView.selectedRange = position
-        }
-        
+        applyAttribute(attribute: myAttribute)
     }
+    
+    
     
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
