@@ -32,6 +32,11 @@ class TextEditViewController: MainViewController {
     var textAttrString = NSAttributedString()
     
     
+    
+    
+    var currentSelectedRange: NSRange?
+    
+    
     @IBOutlet weak var alligmentSegmentControl: UISegmentedControl!
     @IBOutlet weak var textView: UITextView!
 
@@ -158,35 +163,21 @@ class TextEditViewController: MainViewController {
     @IBAction func changedPosition(_ sender: UISegmentedControl) {
         
         
+        
         attributed.position = NSTextAlignment(rawValue: sender.selectedSegmentIndex)!
-        
-        let text = textView.text
-        
         let myAttribute = getAttribute()
         
-        
-        
-        
-        if textView.selectedTextRange!.isEmpty{
-            
-            
-            
-            textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
-        } else {
+        if let currentSelectedRange = currentSelectedRange {
             let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
             
-            textMutAttrString.setAttributes(myAttribute, range: textView.selectedRange)
+            textMutAttrString.setAttributes(myAttribute, range: currentSelectedRange)
             
             textAttrString = textMutAttrString
+            let position = textView.selectedRange
+            
+            textView.attributedText = textAttrString
+            textView.selectedRange = position
         }
-        
-        let position = textView.selectedRange
-        
-        textView.attributedText = textAttrString
-        textView.selectedRange = position
-        
-        
-      //  textField.textAlignment = attributed.position
     }
 
     @IBAction func readAllFonts(_ sender: UIButton) {
@@ -255,22 +246,55 @@ extension TextEditViewController: UITextViewDelegate {
         
         print("location = \(textView.selectedRange.location) length = \(textView.selectedRange.length)")
         
-        var range = textView.selectedRange
+        let rangeSelect = textView.selectedRange
+        
+        if rangeSelect.length > 0 {
+            currentSelectedRange = rangeSelect
+        } else {
+            if let selectedTextRange = textView.selectedTextRange {
+                do {
+                    
+                    
+                    
+                    let regex = try NSRegularExpression(pattern: "\n", options: .caseInsensitive)
+                    let length  = textView.offset(from: selectedTextRange.start, to: textView.endOfDocument)
+                    
+                    var range = NSRange(location: textView.selectedRange.location, length: length)
+                    
+                    for match in regex.matches(in: textView.text, options: .withTransparentBounds, range: range) {
+                        range = NSRange(location: range.location, length:  match.range.location - range.location)
+                        
+                        break
+                        
+                    }
+                    
+                    currentSelectedRange = range
+                    
+                } catch _ {
+                    
+                }
+            }
+        }
         
         //print(textView.attributedText.length)
         
-        let lengthDocument = textView.offset(from: textView.beginningOfDocument, to: textView.endOfDocument)
         
-        if range.length == 0 && range.location != lengthDocument {
-            range.length = 1
-        }
         
-        textView.attributedText.enumerateAttribute(NSParagraphStyleAttributeName, in: range, options: .reverse) { (attribute: Any, range: NSRange, _) in
-            if let paragraph = attribute as? NSMutableParagraphStyle {
-                alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue
+//        if range.length == 0 && range.location != lengthDocument {
+//            range.length = 1
+//        }
+        
+        
+
+        if let range = currentSelectedRange {
+            textView.attributedText.enumerateAttribute(NSParagraphStyleAttributeName, in: range, options: .reverse) { (attribute: Any, range: NSRange, _) in
+                if let paragraph = attribute as? NSMutableParagraphStyle {
+                    alligmentSegmentControl.selectedSegmentIndex = paragraph.alignment.rawValue
+                }
+                
             }
-            
         }
+        
         
 //        if let paragraph = textView.attributedText.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle {
 //          
@@ -299,30 +323,45 @@ extension TextEditViewController: UIPopoverPresentationControllerDelegate {
     }
     
     func setTextColor (_ color: UIColor) {
-        
-        let text = textView.text
-        
         attributed.color = color
-        
         let myAttribute = getAttribute()
-        textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
- 
-        textView.attributedText = textAttrString
+        
+        if let currentSelectedRange = currentSelectedRange {
+            let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
+            
+            textMutAttrString.setAttributes(myAttribute, range: currentSelectedRange)
+            
+            textAttrString = textMutAttrString
+            let position = textView.selectedRange
+            
+            textView.attributedText = textAttrString
+            textView.selectedRange = position
+        }
+        
     }
     
     
     
     func setFont(_ font: UIFont) {
-        let text = textView.text
         
         attributed.font = font
         
         let myAttribute = getAttribute()
         
-        textAttrString = NSAttributedString(string: text!, attributes: myAttribute)
         
-        textView.attributedText = textAttrString
+        
+        if let currentSelectedRange = currentSelectedRange {
+            let textMutAttrString = NSMutableAttributedString(attributedString: textView.attributedText)
             
+            textMutAttrString.setAttributes(myAttribute, range: currentSelectedRange)
+            
+            textAttrString = textMutAttrString
+            let position = textView.selectedRange
+            
+            textView.attributedText = textAttrString
+            textView.selectedRange = position
+        }
+        
     }
     
     
